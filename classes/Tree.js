@@ -1,16 +1,11 @@
-class Tree {
+class Tree extends LivingCreature{
 
     constructor(x, y, id) {
-        this.x = x
-        this.y = y
-        this.id = id
+        super(x,y,id)
         this.life = 5
     }
 
 
-
-
-    
     die() {
         if (this.life <= 0) {
             for (var i in TreeArr) {
