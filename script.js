@@ -1,42 +1,19 @@
-var matrix = [];
 
-
-function generateMatrix(size) {
-    var matrix = []
-    for (var y = 0; y < size; y++) {
-        matrix[y] = []
-        for (var x = 0; x < size; x++) {
-            var randomElement = random([0, 1, 1, 1, 1, 1, 2, 2, 2, 3, 4, 5])
-            matrix[y][x] = randomElement
-        }
-
-
-    }
-    return matrix
-
-
-
-}
-
-
-var TreeArr = []
-var grassArr = []
-var grassEaterArr = []
-var hanterArr = []
-var PoizonArr = []
-
-var side = 15
+var socket = io()
+var side = 20,m = 40, n = 40
+var matrix = []
 
 function setup() {
-    matrix = generateMatrix(50)
+    
     frameRate(5)
-    createCanvas(matrix[0].length * side, matrix.length * side)
+    createCanvas(n * side, m * side)
     background("gray")
-    createObjects()
 
 }
 
-function draw() {
+function draw(m) {
+    matrix = m
+    
     for (var y = 0; y < matrix.length; y++) {
         for (var x = 0; x < matrix[y].length; x++) {
             if (matrix[y][x] == 1) {
@@ -57,49 +34,12 @@ function draw() {
         }
     }
 
-    for (var i = 0; i < grassArr.length; i++) {
-        grassArr[i].mul()
-    }
-
-    for (var i = 0; i < grassEaterArr.length; i++) {
-        grassEaterArr[i].eat()
-
-    }
-    for (var i = 0; i < hanterArr.length; i++) {
-        hanterArr[i].eat()
-
-    }
-    for (var i = 0; i < PoizonArr.length; i++) {
-        PoizonArr[i].move()
-
-    }
-    for (var i = 0; i < TreeArr.length; i++) {
-        TreeArr[i].die()
-
-    }
-
 }
 
-function createObjects() {
+socket.on('MATRIX', (m)=>{
+    matrix = m
+})
 
-    for (var y = 0; y < matrix.length; y++) {
-        for (var x = 0; x < matrix[y].length; x++) {
-            if (matrix[y][x] == 1) {
-                var g = new Grass(x, y, 1)
-                grassArr.push(g)
-            } else if (matrix[y][x] == 2) {
-                var ge = new GrassEater(x, y, 2)
-                grassEaterArr.push(ge)
-            } else if (matrix[y][x] == 3) {
-                var ged = new hanter(x, y, 3)
-                hanterArr.push(ged)
-            } else if (matrix[y][x] == 4) {
-                var gedo = new Poizon(x, y, 4)
-                PoizonArr.push(gedo)
-            } else if (matrix[y][x] == 5) {
-                var gedo = new Tree(x, y, 5)
-                TreeArr.push(gedo)
-            }
-        }
-    }
-}
+socket.on('MATRIX', (m)=>{
+    draw(m)
+})
