@@ -8,7 +8,6 @@ module.exports = class GrassEater extends LivingCreature {
 
     }
 
-
     chooseCell(cherecter) {
         this.getNewCoordinates()
         return super.chooseCell(cherecter)
